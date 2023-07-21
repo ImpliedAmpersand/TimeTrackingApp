@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/dists/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/fo/semantic.min.css">
+    <script src="/fo/semantic.min.js"></script>
+    <title>Main Page</title>
+    <style>
+      body, html {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      .full-screen-layout {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+      }
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+        background-color: #f0f0f0;
+      }
+      .content {
+        flex: 1;
+        background-color: #ffffff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .right-content {
+        display: flex;
+        align-items: center;
+      }
+      .fluid.massive.red.ui.button.pale-red {
+        background-color: #e61c55;
+      }
+      /* Add custom styles for your buttons, modals, etc. */
+    </style>
+</head>
+<body>
+
+  <div class="full-screen-layout">
+    <div class="header">
+      <div>
+        <h1 class="ui header">Neighborhood Pediatrics</h1>
+        <h2 class="ui header">Time Tracking</h2>
+      </div>
+      <div class="right-content">
+        <img class="ui small image" src="/images/NP_Logo_BW.png">
+        <button type="submit" class="medium ui button" id="/admin">Go to Admin Page</button>
+      </div>
+    </div>
+    <div class="content">
+      <!-- Your buttons, modals, and other content goes here -->
+      <div class="ui container">
+    <div class="ui centered relaxed grid">
+      <% var count = 0; %>
+      <% var fours = true; %>
+      <% allUsers.forEach(function(user) { %>
+        <div class="four wide column">
+        <% count++; %>
+        <% if (usersIn.includes(user) || usersIn.includes(user.slice(0, user.length - 1))) { %>
+          <button type="submit" class="fluid massive green ui button" id="<%= user %>"><%= user.charAt(user.length - 1) == '@' ? user.slice(0, user.length - 1) : user %></button>
+        <% } else { %>
+        <button type="submit" class="fluid massive red ui button pale-red" id="<%= user %>"><%= user.charAt(user.length - 1) == '@' ? user.slice(0, user.length - 1) : user %></button>
+        <% }; %>
+        </div>
+        <% if (fours == true && count == 4) { %>
+          <% if (count == 4) { %>
+            <% fours = false; %>
+            <% count = 0; %>
+            <div class="three column row">
+          <% } %>
+        <% } %>
+        <% if (fours == false && count == 3) { %>
+          <% fours = true; %>
+          <% count = 0; %>
+          </div>
+        <% } %>
+      <% }); %>
+    </div>
+
+    <div class="ui small modal" id="clockingModal">
+      <div class="header" id="clockingHead">
+        <h1>Clocking</h1>
+      </div>
+      <div class="content" id="clockingText">
+        <h2>Are you clocking?</h2>
+      </div>
+      <div class="actions">
+        <button class="ui huge black deny button">
+          Nope
+        </button>
+        <button class="ui positive huge right labeled icon button" id="confirmClockingBtn">
+          Yep, that's me
+          <i class="checkmark icon"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="ui small modal" id="clockingModalAdmin">
+      <div class="header" id="clockingHeadAdmin">
+        Clocking
+      </div>
+      <div class="content" id="clockingTextAdmin">
+        Enter clock in time manually, if different than current time:
+      </div>
+      <div class="ui input">
+        <% var time = new Date(); %>
+        <% var hr = time.getHours(); %>
+        <% var mn = time.getMinutes().toString().padStart(2, '0'); %>
+        <% var displaytime = (hr > 12 ? hr - 12 : hr) + ":" + mn + (hr < 12 ? "am" : "pm");%>
+        <input type="text" id="clockingInAdmin" placeholder=<%= displaytime %>>
+      </div>
+      <div class="actions">
+        <button class="ui huge black deny button">
+          Nope
+        </button>
+        <button class="ui positive huge right labeled icon button" id="confirmClockingBtn">
+          Yep, that's me
+          <i class="checkmark icon"></i>
+        </button>
+      </div>
+    </div>
+    
+    <div class="ui small modal" id="confirmationModal">
+      <div class="header">
+        Lunch Time
+      </div>
+      <div class="content">
+        Did you eat lunch today?
+      </div>
+      <div class="actions">
+        <button class="ui black deny button">
+          No
+        </button>
+        <button class="ui positive right labeled icon button" id="confirmActionBtn">
+          Yes
+          <i class="checkmark icon"></i>
+        </button>
+      </div>
+    </div>
+    
+
+
+
+</div>
+  <script src="js/buttonnav.js"></script>
+  <script src="js/button.js"></script>
+</body>
+</html>
