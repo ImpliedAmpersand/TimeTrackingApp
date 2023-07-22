@@ -33,9 +33,30 @@ $('[class*=button][class*=massive]').on('click', function() {
   if (buttonId.charAt(buttonId.length - 1) == '@') {buttonId = buttonId.slice(0, buttonId.length - 1)};
   $('#clockingHead').text("Clocking " + inout);
   $('#clockingText').text("Are you " + buttonId + "?");
-
+  if (inout == 'out') {
+    $('#forgotButton').show();
+  }
+  else {
+    $('#forgotButton').hide();
+  }
   $('#clockingModal').modal({
     closable: false,
+    onDeny: function(e) {
+      if (e.hasClass('out-after')) {
+        $.ajax({
+          url: '/time-tracking',
+          type: 'POST',
+          data: JSON.stringify({ button: buttonId, lunch: -2 }),
+          contentType: 'application/json',
+          success: function() {
+            toggleButtonColor(button);
+          },
+          error: function(xhr, status, error) {
+            console.error('Error recording button press:', error);
+          }
+        });
+      }
+    },
     onApprove: function() {
       if (inout === "in") {
         $.ajax({

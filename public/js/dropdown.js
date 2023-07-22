@@ -41,7 +41,7 @@ response.forEach(function(buttonPress) {
       hoursWorked -= 0.5;
     }
 
-    if (buttonPress.hour === 23) {
+    if (buttonPress.lunch == -2) {
       tableRows.push({
         id: buttonPress.id,
         name: buttonPress.name,
