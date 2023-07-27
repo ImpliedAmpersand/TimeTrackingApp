@@ -14,6 +14,7 @@ const timeTrackingAdminInRoute = require('./routes/timeTrackingAdminIn');
 const newUserRoute = require('./routes/newUser');
 const updateTableRoute = require('./routes/updateTable');
 const fixClockoutRoute = require('./routes/fixClockout');
+const changeLunchRoute = require('./routes/changeLunch.js');
 
 // Serve static files from the public directory
 app.use(express.static('public'));
@@ -28,6 +29,7 @@ app.use('/time-tracking-admin-in', timeTrackingAdminInRoute);
 app.use('/new-user', newUserRoute);
 app.use('/update-table', updateTableRoute);
 app.use('/fix-clockout', fixClockoutRoute);
+app.use('/change-lunch', changeLunchRoute);
 
 // Start the server
 app.listen(port, () => {

@@ -7,6 +7,7 @@ $('[class*=button][class*=massive]').on('click', function() {
     buttonId = buttonId.slice(0, buttonId.length - 1);
     $('#clockingHeadAdmin').text("Clocking " + inout);
     $('#clockingTextAdmin').text("Are you " + buttonId + "? Enter clock in time manually, if different than current time:");
+    $('#clockingInAdmin').val("");
     $('#clockingModalAdmin').modal({
       closable: false,
       onApprove: function() {
@@ -46,7 +47,7 @@ $('[class*=button][class*=massive]').on('click', function() {
         $.ajax({
           url: '/time-tracking',
           type: 'POST',
-          data: JSON.stringify({ button: buttonId, lunch: -2 }),
+          data: JSON.stringify({ button: buttonId, lunch: 0, erase: 1 }),
           contentType: 'application/json',
           success: function() {
             toggleButtonColor(button);
@@ -78,7 +79,7 @@ $('[class*=button][class*=massive]').on('click', function() {
             $.ajax({
               url: '/time-tracking',
               type: 'POST',
-              data: JSON.stringify({ button: buttonId, lunch: 0 }),
+              data: JSON.stringify({ button: buttonId, lunch: 0, erase: 0 }),
               contentType: 'application/json',
               success: function() {
                 toggleButtonColor(button);

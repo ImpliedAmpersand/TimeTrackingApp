@@ -7,6 +7,7 @@ const fs = require('fs');
 router.post('/', (req, res) => {
   const name = req.body.button;
   const lunch = req.body.lunch;
+  const erase = req.body.erase;
   const timestamp = new Date();
   const date = timestamp.toString().slice(0,15);
   const hour = timestamp.getHours();
@@ -37,8 +38,8 @@ router.post('/', (req, res) => {
 });
   // Insert the button press record into the database
   db.run(
-    'INSERT INTO time_tracking (name, date, hour, minute, lunch) VALUES (?, ?, ?, ?, ?)',
-    [name, date, hour, minute, lunch],
+    'INSERT INTO time_tracking (name, date, hour, minute, lunch, edited, erase) VALUES (?, ?, ?, ?, ?, ?, ?)',
+    [name, date, hour, minute, lunch, 0, erase],
     (err) => {
       if (err) {
         console.error(err);

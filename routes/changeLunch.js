@@ -4,11 +4,11 @@ const db = require('../database');
 const fs = require('fs');
 
 router.post('/', (req, res) => {
-  const { id, hour, minute } = req.body; // Assuming the request body contains the necessary data
+  const { id, lunch} = req.body; // Assuming the request body contains the necessary data
 
   db.run(
-    'UPDATE time_tracking SET hour = ?, minute = ?, edited = ?, erase = ? WHERE id = ?',
-    [hour, minute, 1, 0, id],
+    'UPDATE time_tracking SET lunch = ? WHERE id = ?',
+    [lunch, id],
     (err) => {
       if (err) {
         console.error(err);

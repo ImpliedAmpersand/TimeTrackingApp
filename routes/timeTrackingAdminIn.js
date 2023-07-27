@@ -10,9 +10,11 @@ router.post('/', (req, res) => {
   const time = req.body.time;
   const timestamp = new Date();
   const date = timestamp.toString().slice(0,15);
+  var edited = 0;
   var hour = timestamp.getHours();
   var minute = timestamp.getMinutes();
   if (time !== '-1') {
+    edited = 1;
     hour = parseInt(time.slice(0, time.indexOf(':')));
     if (time.includes('p') && hour < 12) {
         hour += 12;
@@ -45,8 +47,8 @@ router.post('/', (req, res) => {
 });
   // Insert the button press record into the database
   db.run(
-    'INSERT INTO time_tracking (name, date, hour, minute, lunch) VALUES (?, ?, ?, ?, ?)',
-    [name, date, hour, minute, lunch],
+    'INSERT INTO time_tracking (name, date, hour, minute, lunch, edited, erase) VALUES (?, ?, ?, ?, ?, ?, ?)',
+    [name, date, hour, minute, lunch, edited, 0],
     (err) => {
       if (err) {
         console.error(err);

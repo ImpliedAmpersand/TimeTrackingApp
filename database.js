@@ -11,7 +11,9 @@ db.run(`
     date TEXT,
     hour INTEGER,
     minute INTEGER,
-    lunch INTEGER
+    lunch INTEGER,
+    edited INTEGER,
+    erase INTEGER
 
   )
 `);

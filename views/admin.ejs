@@ -14,9 +14,12 @@
       .no-lunch {
         background-color: rgba(242, 242, 107, 0.3);
       }
+      .edited-time {
+        background-color: rgba(255, 162, 0, 0.3);
+      }
     </style>
 </head>
-<body>
+<body onload="load()">
   <h1 class="ui center aligned header">Welcome to the Admin Page!</h1>
   <h2 class="ui center aligned header">Clocking Table</h2>
   <div class="ui container">
@@ -41,110 +44,19 @@
 <% if (buttonPresses.length === 0 && Object.keys(lastPressByPerson).length === 0) { %>
   <p>No button presses recorded yet.</p>
 <% } else { %>
-  <table class="ui long celled scrolling table">
+  <table class="ui scrolling table">
     <thead>
       <tr>
-        <th>Name</th>
-        <th>Date</th>
-        <th>Time</th>
-        <th>Hours Worked</th>
+        <th class="two wide">Name</th>
+        <th class="two wide">Date</th>
+        <th class="five wide">Time</th>
+        <th class="one wide">Hours</th>
+        <th>Edit Hours</th>
       </tr>
     </thead>
 
     <tbody id="tablebody">
-      <% var lastPressByPerson = {}; %>
-      <% var tableRows = []; %>
-    
-      <% function getTimeFormatted(hour, minute) { %>
-        <% var hourFormatted = hour > 12 ? hour - 12 : hour; %>
-        <% var period = hour >= 12 ? 'pm' : 'am'; %>
-        <% var minuteFormatted = minute.toString().padStart(2, '0'); %>
-        <% return hourFormatted + ':' + minuteFormatted + period; %>
-      <% } %>
-    
-      <% buttonPresses.forEach(function(buttonPress) { %>
-        <% if (lastPressByPerson[buttonPress.name]) { %>
-          <% var lastPress = lastPressByPerson[buttonPress.name]; %>
-          <% lastPress.timeout = buttonPress.hour + ":" + buttonPress.minute; %>
-    
-          <% var inTime = getTimeFormatted(lastPress.hour, lastPress.minute); %>
-          <% var outTime = getTimeFormatted(buttonPress.hour, buttonPress.minute); %>
-    
-          <% var inTimeDecimal = lastPress.hour + (lastPress.minute / 60); %>
-          <% var outTimeDecimal = buttonPress.hour + (buttonPress.minute / 60); %>
-          <% var hoursWorked = outTimeDecimal - inTimeDecimal; %>
-          <% if (buttonPress.lunch == 1) { %>
-            <% hoursWorked -= 0.5; %>
-          <% } %>
-    
-          <% if (buttonPress.lunch == -2) { %>
-            <% tableRows.push({
-              id: buttonPress.id,
-              name: buttonPress.name,
-              date: buttonPress.date,
-              inTime: inTime,
-              outTime: outTime,
-              hoursWorked: hoursWorked.toFixed(2),
-              lunch: buttonPress.lunch,
-              hasClockoutInput: true
-            }); %>
-          <% } else { %>
-            <% tableRows.push({
-              id: buttonPress.id,
-              name: buttonPress.name,
-              date: buttonPress.date,
-              inTime: inTime,
-              outTime: outTime,
-              hoursWorked: hoursWorked.toFixed(2),
-              lunch: buttonPress.lunch,
-              hasClockoutInput: false
-            }); %>
-          <% } %>
-    
-          <% // Clear the last press for the person %>
-          <% delete lastPressByPerson[buttonPress.name]; %>
-        <% } else { %>
-          <% lastPressByPerson[buttonPress.name] = buttonPress; %>
-        <% } %>
-      <% }); %>
-    
-      <% // Add remaining timestamps to tableRows array %>
-      <% Object.keys(lastPressByPerson).forEach(function(key) { %>
-        <% var lastPress = lastPressByPerson[key]; %>
-    
-        <% var inTime = getTimeFormatted(lastPress.hour, lastPress.minute); %>
-    
-        <% tableRows.push({
-          id: lastPress.id,
-          name: lastPress.name,
-          date: lastPress.date,
-          inTime: inTime,
-          outTime: 'N/A',
-          hoursWorked: 'N/A',
-          lunch: lastPress.lunch,
-          hasClockoutInput: false
-        }); %>
-      <% }); %>
-    
-      <% // Reverse the table rows before rendering %>
-      <% tableRows.reverse().forEach(function(row) { %>
-        <tr <% if (row.outTime === 'N/A') { %>class="unmatched-row"<% } %>>
-          <td data-label="Name"><%= row.name %></td>
-          <td data-label="Date"><%= row.date %></td>
-          <td data-label="Time">
-            <% if (row.hasClockoutInput) { %>
-              <%= row.inTime %>-
-              <div class="ui input" style="width:80px;">
-                <input type="text" id="clockoutInput<%= row.id %>" class="clockout-input" placeholder="5:00pm">
-              </div>
-              <button class="ui tiny green button clockout-submit" id="<%= row.id %>">Submit</button>
-            <% } else { %>
-              <%= row.inTime %> - <%= row.outTime %>
-            <% } %>
-          </td>
-          <td <% if (row.lunch == 0) { %>class="no-lunch"<% } %>data-label="Hours Worked"><%= row.hoursWorked %></td>
-        </tr>
-      <% }); %>
+      
     </tbody>
     
     
