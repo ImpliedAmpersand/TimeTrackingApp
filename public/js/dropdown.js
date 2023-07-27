@@ -128,7 +128,7 @@ tableRows.forEach(function(row) {
   var $tr = $('<tr>');
   var $td1 = $('<td class="two wide">').text(row.name);
   var $td2 = $('<td class="two wide">').text(row.date);
-  var $td3 = $('<td class="five wide">');
+  var $td3 = $('<td class="three wide">');
 
   if (row.hasClockoutInput) {
     $td3.append(
@@ -142,7 +142,7 @@ tableRows.forEach(function(row) {
     $td3.text(row.inTime + ' - ' + row.outTime);
   }
 
-  var $td4 = $('<td class="one wide">').text(row.hoursWorked);
+  var $td4 = $('<td class="three wide">').text(row.hoursWorked);
 
   var $td5 = $('<td>').text(row.editHours);
   $td5.append(
@@ -161,8 +161,8 @@ tableRows.forEach(function(row) {
       $td5.append('<button class="ui tiny pink button sub-lunch" id="' + row.outid + '">- Lunch</button>');
     }
 
-    if (row.lunch == -3) {
-      $tr.addClass('edited-time');
+    if (row.inedited == 1 || row.outedited == 1) {
+      $td3.addClass('edited-time');
     }
 
   if (row.outTime === 'N/A') {
